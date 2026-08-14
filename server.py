@@ -25,9 +25,58 @@ class ChatServer:
     def validar_mensaje(self, mensaje):
         return bool(mensaje and mensaje.strip())
 
+    def broadcast(self, mensaje_texto, socket_emisor=None):
+        if not mensaje_texto:
+            return
+
+        try:
+            mensaje_final = self.formatear_mensaje(mensaje_texto)
+        except ValueError:
+            return
+
+        for socket_cliente in list(self.clientes_conectados.keys()):
+            if socket_cliente != socket_emisor:
+                try:
+                    socket_cliente.send(mensaje_final.encode('utf-8'))
+                except Exception:
+                    self.remover_cliente(socket_cliente)
+
     def manejar_cliente(self, socket_cliente, direccion):
-        # Etapa inicial: la lógica de sesión llega en commits posteriores.
-        socket_cliente.close()
+        try:
+            socket_cliente.send("Escribe tu nombre de usuario: ".encode('utf-8'))
+            nombre = socket_cliente.recv(1024).decode('utf-8').strip()
+
+            if not nombre:
+                nombre = f"Anonimo_{direccion[1]}"
+
+            self.clientes_conectados[socket_cliente] = nombre
+            self.broadcast(f"{nombre} se ha unido al chat!")
+
+            while self.running:
+                try:
+                    datos = socket_cliente.recv(1024)
+                    if not datos:
+                        break
+                    mensaje = datos.decode('utf-8').strip()
+
+                    if self.validar_mensaje(mensaje):
+                        self.broadcast(f"{nombre}: {mensaje}", socket_cliente)
+                except socket.timeout:
+                    continue
+        except Exception:
+            pass
+        finally:
+            self.remover_cliente(socket_cliente)
+
+    def remover_cliente(self, socket_cliente):
+        if socket_cliente in self.clientes_conectados:
+            nombre = self.clientes_conectados[socket_cliente]
+            del self.clientes_conectados[socket_cliente]
+            try:
+                socket_cliente.close()
+            except Exception:
+                pass
+            self.broadcast(f"{nombre} ha abandonado el chat.")
 
     def iniciar_servidor(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
