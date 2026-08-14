@@ -1,5 +1,6 @@
 import socket
 import threading
+from datetime import datetime
 
 
 class ChatServer:
@@ -11,6 +12,18 @@ class ChatServer:
         self.clientes_conectados = {}
         self.server_socket = None
         self.running = False
+
+    def formatear_mensaje(self, mensaje_texto):
+        if not isinstance(mensaje_texto, str):
+            raise ValueError("El mensaje debe ser una cadena de texto")
+        if not mensaje_texto.strip():
+            raise ValueError("El mensaje no puede estar vacío")
+
+        tiempo = datetime.now().strftime("%H:%M:%S")
+        return f"[{tiempo}] {mensaje_texto}"
+
+    def validar_mensaje(self, mensaje):
+        return bool(mensaje and mensaje.strip())
 
     def manejar_cliente(self, socket_cliente, direccion):
         # Etapa inicial: la lógica de sesión llega en commits posteriores.
