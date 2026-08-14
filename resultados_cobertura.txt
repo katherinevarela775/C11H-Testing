@@ -1,0 +1,41 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.2, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\kathe\AppData\Local\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\kathe\OneDrive\Desktop\C11H - Testing
+plugins: anyio-4.14.1, cov-7.1.0
+collecting ... collected 18 items
+
+tests/test_integration.py::test_integracion_envio_y_recepcion[\xa1Hola desde la prueba de integracion!] PASSED [  5%]
+tests/test_integration.py::test_integracion_envio_y_recepcion[Mensaje con emojis \U0001f680\U0001f60e\U0001f47e] PASSED [ 11%]
+tests/test_integration.py::test_integracion_envio_y_recepcion[Caracteres raros: @#%&*()_+{}:<>?~`] PASSED [ 16%]
+tests/test_integration.py::test_desconexion_inesperada_cliente PASSED    [ 22%]
+tests/test_integration.py::test_desconexion_masiva_y_durante_transmision PASSED [ 27%]
+tests/test_tdd.py::test_validar_mensaje_vacio_falla[] PASSED             [ 33%]
+tests/test_tdd.py::test_validar_mensaje_vacio_falla[   ] PASSED          [ 38%]
+tests/test_tdd.py::test_validar_mensaje_valido_pasa PASSED               [ 44%]
+tests/test_unit.py::test_formatear_mensaje_positivo PASSED               [ 50%]
+tests/test_unit.py::test_formatear_mensaje_negativo_vacio PASSED         [ 55%]
+tests/test_unit.py::test_conectar_negativo_ip_invalida PASSED            [ 61%]
+tests/test_unit.py::test_cliente_enviar_mensajes_normal PASSED           [ 66%]
+tests/test_unit.py::test_cliente_recibir_mensajes_positivo PASSED        [ 72%]
+tests/test_unit.py::test_procesar_comandos_rutas_completas[/help-comando] PASSED [ 77%]
+tests/test_unit.py::test_procesar_comandos_rutas_completas[/users-comando] PASSED [ 83%]
+tests/test_unit.py::test_procesar_comandos_rutas_completas[/exit-salir] PASSED [ 88%]
+tests/test_unit.py::test_procesar_comandos_rutas_completas[Hola mundo-mensaje_normal] PASSED [ 94%]
+tests/test_unit.py::test_cliente_reintentos_conexion PASSED              [100%]
+
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.14.2-final-0 _______________
+
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+client.py                      80     32    60%
+server.py                     123     17    86%
+tests\__init__.py               0      0   100%
+tests\test_integration.py      97      2    98%
+tests\test_tdd.py              10      0   100%
+tests\test_unit.py             68      2    97%
+-----------------------------------------------
+TOTAL                         378     53    86%
+Required test coverage of 80.0% reached. Total coverage: 85.98%
+============================= 18 passed in 7.48s ==============================
